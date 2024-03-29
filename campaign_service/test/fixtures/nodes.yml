@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  campaign: one
+  next_node: one
+  action: one
+  action_type: Action
+
+two:
+  campaign: two
+  next_node: two
+  action: two
+  action_type: Action
