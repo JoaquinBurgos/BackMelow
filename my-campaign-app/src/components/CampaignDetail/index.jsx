@@ -1,10 +1,11 @@
 // Dentro de src/components/CampaignDetail.js
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { Typography, Spin } from 'antd';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Typography, Spin, Divider, Button } from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
 import NodeFlowEditor from '../FlowEditor';
+import styles from './index.module.scss';
 import API from '../../services/Api';
 
 const { Title } = Typography;
@@ -13,6 +14,7 @@ const CampaignDetail = () => {
   const { campaignId } = useParams();
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchCampaign = () => {
     API.get(`/campaigns/${campaignId}`)
@@ -30,21 +32,27 @@ const CampaignDetail = () => {
     fetchCampaign();
   }, [campaignId]);
 
-  const handleNodeCreation = () => {
+  const handleResourceCreation = () => {
     fetchCampaign(); 
   };
+
+  const goBack = () => navigate(-1);
 
   if (loading) {
     return <Spin size="large" />;
   }
 
   return (
-    <div>
+    <div className={styles.campaignDetailContainer}>
+      <div onClick={goBack} className={styles.goBackButton}>
+        <LeftOutlined /> Volver a la lista
+      </div>
       {campaign && (
         <>
           <Title level={2}>{campaign.name}</Title>
+          <Divider className={styles.divider}/>
           <p>{campaign.description}</p>
-          <NodeFlowEditor campaign={campaign} onNodeCreated={handleNodeCreation}/>
+          <NodeFlowEditor campaign={campaign} onResourceCreated={handleResourceCreation}/>
         </>
       )}
     </div>

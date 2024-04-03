@@ -35,7 +35,9 @@ RSpec.describe "Campaigns", type: :request do
     let!(:node1) { create(:node, campaign: campaign, action: action_email1) }
     let!(:node2) { create(:node, campaign: campaign, action: action_email2) }
     let!(:node3) { create(:node, campaign: campaign, action: action_wait) }
-
+    let!(:condition1) { create(:condition, event_type: "EventType1", criteria_key: "Key1", criteria_value: "Value1", campaign: campaign) }
+    let!(:condition2) { create(:condition, event_type: "EventType2", criteria_key: "Key2", criteria_value: "Value2", campaign: campaign) }
+    
     before do
       get campaign_path(campaign)
     end
@@ -58,6 +60,15 @@ RSpec.describe "Campaigns", type: :request do
 
       # Verificar la duración del ActionWait
       expect(wait_nodes[0]['action']['duration']).to eq(15)
+      puts json_response
+      expect(json_response['conditions'].length).to eq(2)
+      condition1_response = json_response['conditions'].find { |c| c['criteria_key'] == "Key1" }
+      condition2_response = json_response['conditions'].find { |c| c['criteria_key'] == "Key2" }
+
+      expect(condition1_response['event_type']).to eq("EventType1")
+      expect(condition1_response['criteria_value']).to eq("Value1")
+      expect(condition2_response['event_type']).to eq("EventType2")
+      expect(condition2_response['criteria_value']).to eq("Value2")
     end
   end
 end

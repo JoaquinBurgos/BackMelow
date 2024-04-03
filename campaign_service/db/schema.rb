@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_29_191242) do
+ActiveRecord::Schema.define(version: 2024_04_02_162405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,15 +26,6 @@ ActiveRecord::Schema.define(version: 2024_03_29_191242) do
     t.integer "duration"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "campaign_conditions", force: :cascade do |t|
-    t.bigint "campaign_id", null: false
-    t.bigint "condition_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["campaign_id"], name: "index_campaign_conditions_on_campaign_id"
-    t.index ["condition_id"], name: "index_campaign_conditions_on_condition_id"
   end
 
   create_table "campaigns", force: :cascade do |t|
@@ -53,6 +44,8 @@ ActiveRecord::Schema.define(version: 2024_03_29_191242) do
     t.string "criteria_value"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "campaign_id", null: false
+    t.index ["campaign_id"], name: "index_conditions_on_campaign_id"
   end
 
   create_table "nodes", force: :cascade do |t|
@@ -83,6 +76,7 @@ ActiveRecord::Schema.define(version: 2024_03_29_191242) do
     t.datetime "last_updated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "completed"
     t.index ["campaign_id"], name: "index_user_campaign_progresses_on_campaign_id"
     t.index ["node_id"], name: "index_user_campaign_progresses_on_node_id"
     t.index ["user_id"], name: "index_user_campaign_progresses_on_user_id"
@@ -95,8 +89,7 @@ ActiveRecord::Schema.define(version: 2024_03_29_191242) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "campaign_conditions", "campaigns"
-  add_foreign_key "campaign_conditions", "conditions"
+  add_foreign_key "conditions", "campaigns"
   add_foreign_key "nodes", "campaigns"
   add_foreign_key "nodes", "nodes", column: "next_node_id"
   add_foreign_key "user_activities", "users"

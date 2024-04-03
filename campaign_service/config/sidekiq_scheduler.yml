@@ -1,0 +1,4 @@
+campaign_monitor_worker:
+  every: ['20s', first_in: '0s']
+  class: CampaignMonitorWorker
+  queue: default

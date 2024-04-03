@@ -33,7 +33,7 @@ class CampaignsController < ApplicationController
 
   def set_campaign
     if action_name == 'show'
-      @campaign = Campaign.includes(nodes: :action).find(params[:id])
+      @campaign = Campaign.includes(nodes: :action, conditions: {}).find(params[:id])
     else
       @campaign = Campaign.find(params[:id])
     end

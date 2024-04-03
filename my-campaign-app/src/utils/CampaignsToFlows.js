@@ -23,15 +23,15 @@ export const transformCampaignToFlowElements = (campaign) => {
         'ActionEmail': 'lightblue',
         'ActionWait': 'lightgreen',
         // Añade colores para los nodos especiales
-        'Trigger': 'lightcoral',
-        'AddNode': 'lightyellow',
+        'Trigger': '#EEADD1',
+        'AddNode': '#CB803D',
     };
 
     // Nodo inicial para editar la condición de trigger
     nodes.push({
         id: 'trigger',
         type: 'default', // Este tipo puede ser personalizado para diferenciar los nodos especiales
-        data: { label: 'Editar Trigger' },
+        data: { label: 'Campaign Rules' },
         position: { x: 250, y: 0 }, // Este nodo siempre estará al principio
         style: {
             background: actionTypeColors['Trigger'],
@@ -49,7 +49,7 @@ export const transformCampaignToFlowElements = (campaign) => {
         nodes.push({
             id: node.id.toString(),
             type: 'default',
-            data: { label: `${node.action_type === 'ActionEmail' ? node.action.subject : 'Espera: ' + node.action.duration + 's'}` },
+            data: { label: `${node.action_type === 'ActionEmail' ? 'Send Email: ' + node.action.subject : 'Wait: ' + node.action.duration + 'm'}` },
             position: { x: 250, y: yOffset + index * 100 },
             style: {
                 background: actionTypeColors[node.action_type],
@@ -97,7 +97,7 @@ export const transformCampaignToFlowElements = (campaign) => {
     nodes.push({
         id: 'addNode',
         type: 'default',
-        data: { label: 'Añadir Nodo' },
+        data: { label: 'Add Node' },
         position: { x: 250, y: lastNodePosition },
         style: {
             background: actionTypeColors['AddNode'],

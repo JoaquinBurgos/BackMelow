@@ -3,16 +3,19 @@ import { Card } from 'antd';
 import ReactFlow from 'react-flow-renderer';
 import { transformCampaignToFlowElements } from '../../utils/CampaignsToFlows';
 import NodeDetail from '../NodeDetail';
-const NodeFlowEditor = ({ campaign, onNodeCreated }) => {
+import styles from './index.module.scss';
+
+const NodeFlowEditor = ({ campaign, onResourceCreated }) => {
     const { nodes, edges, last_node_id } = transformCampaignToFlowElements(campaign);
     const [selectedNode, setSelectedNode] = useState(null);
     const onNodeClick = (event, element) => {
         console.log('Element clicked:', element);
         setSelectedNode(element);
     };
+
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', gap: '20px' }}>
-            <div style={{ width: '500px', height: '500px', background: '#e5e5e5' }}>
+        <div className={styles.nodeFlowContainer}>
+            <div className={styles.flowWrapper}>
                 <ReactFlow
                     nodes={nodes}
                     edges={edges}
@@ -23,10 +26,10 @@ const NodeFlowEditor = ({ campaign, onNodeCreated }) => {
             </div>
             <Card
                 title="Editor de Nodos"
-                style={{ width: 300, height: '500px' }} // Ajusta la altura para alinearla con el área de ReactFlow si es necesario
+                className={styles.editorCard}
             >
                 {selectedNode ? (
-                    <NodeDetail node={selectedNode} onNodeCreated={onNodeCreated} last_node_id={last_node_id} setSelectedNode={setSelectedNode}/>
+                    <NodeDetail node={selectedNode} onResourceCreated={onResourceCreated} last_node_id={last_node_id} setSelectedNode={setSelectedNode} conditions={campaign.conditions}/>
                 ) : (
                     <p>Elige algún nodo que quieras editar.</p>
                 )}
