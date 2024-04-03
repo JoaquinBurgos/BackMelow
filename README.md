@@ -23,4 +23,3 @@ CampaignFlow es ideal para empresas y equipos de marketing que buscan optimizar 
 3. **Simular Actividades**: Crea actividades de usuario simuladas para entender cómo interactúan con la campaña.
 4. **Evaluación Automatizada**: El worker ejecuta la lógica de procesamiento para mover a los usuarios a través del flujo basándose en sus actividades y condiciones cumplidas.
 
-Este README proporciona todas las instrucciones necesarias para instalar, configurar y ejecutar CampaignFlow, así como información detallada sobre su arquitectura y capacidades.
