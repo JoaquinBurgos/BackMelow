@@ -44,7 +44,7 @@ const NodeConditions = ({ conditions, onResourceCreated, onResourceDeleted }) =>
             key={condition.id}
             actions={[
               <Popconfirm
-                title="¿Estás seguro de querer eliminar esta condición?"
+                title="Are you sure you want to delete this condition?"
                 onConfirm={() => deleteCondition(condition.id)}
                 okText="Sí"
                 cancelText="No"
@@ -54,8 +54,8 @@ const NodeConditions = ({ conditions, onResourceCreated, onResourceDeleted }) =>
             ]}
           >
             <List.Item.Meta
-              title={`Tipo de Condición: ${condition.event_type === 'last_login' ? 'Último Inicio de Sesión' : condition.event_type === 'page_visit' ? 'Página Visitada' : 'Tiempo desde Creación de Cuenta'}`}
-              description={`${condition.event_type === 'page_visit' ? 'Url:' : 'Tiempo: '} ${condition.criteria_value} ${condition.event_type === 'page_visit' ? '' : 'segundos'}`}
+              title={`Condition Type: ${condition.event_type === 'last_login' ? 'Last Login' : condition.event_type === 'page_visit' ? 'Page Visit' : 'Time since account creation'}`}
+              description={`${condition.event_type === 'page_visit' ? 'Url:' : 'Time: '} ${condition.criteria_value} ${condition.event_type === 'page_visit' ? '' : 'days'}`}
             />
           </List.Item>
         )}
@@ -66,7 +66,7 @@ const NodeConditions = ({ conditions, onResourceCreated, onResourceDeleted }) =>
         onCancel={() => setOpen(false)}
       />
       <Divider />
-      <Button type="primary" style={{ marginRight: '10px' }} onClick={() => setOpen(true)}>Agregar Condición</Button>
+      <Button type="primary" style={{ marginRight: '10px', marginBottom: '10px' }} onClick={() => setOpen(true)}>Add Condition</Button>
     </>
   );
 };

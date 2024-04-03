@@ -5,7 +5,6 @@ RSpec.describe "Nodes", type: :request do
     let!(:campaign) { create(:campaign) }
     
     it "adds nodes correctly and navigates through them starting from the first node" do
-      # Crear Nodo 1 (Email)
       post "/campaigns/#{campaign.id}/nodes", params: {
         node: {
           action_type: 'ActionEmail',
@@ -18,7 +17,6 @@ RSpec.describe "Nodes", type: :request do
       expect(response).to have_http_status(:created)
       node1_id = JSON.parse(response.body)["id"]
       
-      # Crear Nodo 2 (Email)
       post "/campaigns/#{campaign.id}/nodes", params: {
         node: {
           action_type: 'ActionEmail',
@@ -32,7 +30,6 @@ RSpec.describe "Nodes", type: :request do
       expect(response).to have_http_status(:created)
       node2_id = JSON.parse(response.body)["id"]
 
-      # Crear Nodo 3 (Wait)
       post "/campaigns/#{campaign.id}/nodes", params: {
         node: {
           action_type: 'ActionWait',
@@ -45,19 +42,17 @@ RSpec.describe "Nodes", type: :request do
       expect(response).to have_http_status(:created)
       node3_id = JSON.parse(response.body)["id"]
       
-      # Verificar los valores de las acciones para cada nodo creado
       [node1_id, node2_id, node3_id].each_with_index do |node_id, index|
         get "/campaigns/#{campaign.id}/nodes/#{node_id}"
         json_response = JSON.parse(response.body)
         case index
-        when 0, 1 # Nodo 1 y Nodo 2 son de tipo Email
+        when 0, 1 
           expect(json_response.dig('action', 'subject')).to eq("Email #{index + 1} Subject")
-        when 2 # Nodo 3 es de tipo Wait
+        when 2 
           expect(json_response.dig('action', 'duration')).to eq(5)
         end
       end
       
-      # Navegar desde el primer nodo al último
       current_node_id = campaign.reload.first_node_id
       expected_node_ids = [node1_id, node2_id, node3_id]
 			get "/campaigns/#{campaign.id}"
@@ -69,7 +64,6 @@ RSpec.describe "Nodes", type: :request do
         current_node_id = json_response["next_node_id"]
       end
       
-      # El último nodo no debería tener un next_node_id
       expect(current_node_id).to be_nil
     end
   end
@@ -81,10 +75,8 @@ RSpec.describe "Nodes", type: :request do
     let!(:following_node) { create(:node, campaign: campaign, next_node_id: nil, action: action_wait) }
 
     before do
-      # Configurar inicialmente el parent_node para que apunte al following_node
       parent_node.update!(next_node_id: following_node.id)
 
-      # La petición POST para insertar el nuevo nodo entre parent_node y following_node
       post "/campaigns/#{campaign.id}/nodes", params: {
         node: {
           action_type: 'ActionEmail',
@@ -144,14 +136,12 @@ RSpec.describe "Nodes", type: :request do
       expect(response).to have_http_status(:ok)
       campaign.reload
       expect(campaign.first_node_id).to eq(second_node.id)
-      # Asegurarse de que se puede recorrer desde el nuevo first_node hasta el último
       current_node = campaign.nodes.find(campaign.first_node_id)
       expect(current_node).to eq(second_node)
       expect(current_node.next_node_id).to eq(third_node.id)
     end
   end
 	describe "POST /campaigns/:campaign_id/nodes" do
-    # Prueba para insertar un nodo en una campaña vacía
     context "when adding a node to an empty campaign" do
       let!(:campaign) { create(:campaign) }
       
@@ -168,11 +158,9 @@ RSpec.describe "Nodes", type: :request do
         expect(campaign.reload.first_node_id).not_to be_nil
         new_node = Node.last
         expect(new_node.action_type).to eq("ActionEmail")
-        # Verificar otros atributos según sea necesario
       end
     end
 
-    # Prueba para añadir un nuevo nodo en una campaña que ya tiene un nodo
     context "when adding a node to a campaign with an existing node" do
       let!(:campaign) { create(:campaign) }
 			let!(:action_email) { create(:action_email) }
@@ -198,7 +186,6 @@ RSpec.describe "Nodes", type: :request do
 		let!(:campaign) { create(:campaign) }
 	
 		it "creates a node and then updates it, ensuring the old action is deleted" do
-			# Paso 1: Crear el nodo
 			post "/campaigns/#{campaign.id}/nodes", params: {
 				node: {
 					action_type: "ActionEmail",
@@ -210,12 +197,9 @@ RSpec.describe "Nodes", type: :request do
 			node_response = JSON.parse(response.body)
 			original_action_id = node_response.dig('action', 'id') # Guarda la ID de la acción original
 	
-			# Asume que has almacenado las acciones de forma que puedas consultarlas directamente
-			# Esto podría ser ActionEmail.find(original_action_id) o un modelo Action genérico, dependiendo de tu implementación
 			original_action = ActionEmail.find_by(id: original_action_id)
 			expect(original_action).not_to be_nil
 	
-			# Paso 2: Actualizar el nodo
 			new_subject = "Updated subject"
 			patch "/campaigns/#{campaign.id}/nodes/#{node_response['id']}", params: {
 				node: {
@@ -226,8 +210,6 @@ RSpec.describe "Nodes", type: :request do
 	
 			expect(response).to have_http_status(:ok)
 	
-			# Verifica que la acción original ha sido eliminada
-			# Cambia 'ActionEmail' por tu modelo de acción si es necesario
 			expect(ActionEmail.exists?(original_action_id)).to be_falsey
 		end
 	end

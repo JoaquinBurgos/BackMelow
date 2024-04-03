@@ -1,5 +1,3 @@
-// Dentro de src/components/CampaignDetail.js
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, Spin, Divider, Button } from 'antd';
@@ -27,7 +25,7 @@ const CampaignDetail = () => {
         setLoading(false);
       });
   };
-
+  console.log(campaign)
   useEffect(() => {
     fetchCampaign();
   }, [campaignId]);
@@ -45,7 +43,7 @@ const CampaignDetail = () => {
   return (
     <div className={styles.campaignDetailContainer}>
       <div onClick={goBack} className={styles.goBackButton}>
-        <LeftOutlined /> Volver a la lista
+        <LeftOutlined /> Return to the list
       </div>
       {campaign && (
         <>

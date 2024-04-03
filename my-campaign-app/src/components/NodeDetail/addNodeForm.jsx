@@ -1,19 +1,18 @@
-// AddNodeForm.js
 import React, { useState } from 'react';
 import { Form, Select, Input, Button } from 'antd';
 
-const AddNodeForm = ({ onSubmit }) => {
+const AddNodeForm = ({ onSubmit, onCancel }) => {
   const [form] = Form.useForm();
   const [actionType, setActionType] = useState('');
 
   const handleActionTypeChange = (value) => {
     setActionType(value);
-    form.resetFields(['subject', 'body', 'duration']); // Específicamente resetea estos campos
+    form.resetFields(['subject', 'body', 'duration']); 
   };
 
   return (
     <Form form={form} layout="vertical" onFinish={onSubmit}>
-      <Form.Item name="actionType" label="Tipo de Acción" rules={[{ required: true, message: 'Por favor, selecciona un tipo de acción' }]}>
+      <Form.Item name="actionType" label="Action Type" rules={[{ required: true, message: 'Please, select a type of action' }]}>
         <Select onChange={handleActionTypeChange}>
           <Select.Option value="ActionEmail">Email Action</Select.Option>
           <Select.Option value="ActionWait">Wait Action</Select.Option>
@@ -22,23 +21,24 @@ const AddNodeForm = ({ onSubmit }) => {
 
       {actionType === 'ActionEmail' && (
         <>
-          <Form.Item name="subject" label="Asunto" rules={[{ required: true, message: 'Por favor, ingresa un asunto' }]}>
+          <Form.Item name="subject" label="Subject" rules={[{ required: true, message: 'Please enter a subject' }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="body" label="Cuerpo del Email" rules={[{ required: true, message: 'Por favor, ingresa el cuerpo del email' }]}>
+          <Form.Item name="body" label="Body" rules={[{ required: true, message: 'Please enter a body' }]}>
             <Input.TextArea />
           </Form.Item>
         </>
       )}
 
       {actionType === 'ActionWait' && (
-        <Form.Item name="duration" label="Duración (segundos)" rules={[{ required: true, message: 'Por favor, ingresa la duración' }]}>
+        <Form.Item name="duration" label="Duration (minutes)" rules={[{ required: true, message: 'Please select a duration' }]}>
           <Input type="number" />
         </Form.Item>
       )}
 
       <Form.Item>
-        <Button type="primary" htmlType="submit">Crear Nodo</Button>
+        <Button type="primary" style={{margin: "10px"}} htmlType="submit">Create Node</Button>
+        <Button danger onClick={onCancel}>Cancel</Button>
       </Form.Item>
     </Form>
   );

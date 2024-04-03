@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Row, Col, Typography, Divider, Button } from 'antd';
+import { Card, Row, Col, Typography, Divider, Button, Popconfirm } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import API from '../../services/Api';
 import AddCampaignModal from './AddCampaign';
 import styles from './index.module.scss';
@@ -23,8 +23,16 @@ const CampaignList = () => {
       .catch(err => console.error(err));
   };
 
-  const handleCardClick = (campaignId) => {
+  const handleNavigate = (campaignId, event) => {
+    event.stopPropagation();
     navigate(`/campaigns/${campaignId}`);
+  };
+
+  const handleDeleteCampaign = (campaignId, event) => {
+    event.stopPropagation();
+    API.delete(`/campaigns/${campaignId}`)
+      .then(() => fetchCampaigns())
+      .catch(err => console.error(err));
   };
 
   const showModal = () => {
@@ -34,7 +42,6 @@ const CampaignList = () => {
   const handleCreate = (values) => {
     API.post('/campaigns', values)
       .then(() => {
-        // Recarga la lista de campañas desde el servidor después de crear una nueva.
         fetchCampaigns();
         setIsModalVisible(false);
       })
@@ -47,15 +54,24 @@ const CampaignList = () => {
       <Divider className={styles.divider}/>
       <Row gutter={[16, 16]}>
         {campaigns.map((item) => (
-          <Col key={item.id} xs={24} sm={12} md={8} xl={4} style={{ marginBottom: 16 }}>
+          <Col key={item.id} xs={24} sm={12} md={8} xl={4}>
             <Card
               className={styles.campaignCard}
-              onClick={() => handleCardClick(item.id)}
-              hoverable
-              title={item.name}
               bordered={false}
+              actions={[
+                <EyeOutlined key="view" onClick={(e) => handleNavigate(item.id, e)} />,
+                <Popconfirm
+                  title="Are you sure you want to delete this campaign?"
+                  onConfirm={(e) => handleDeleteCampaign(item.id, e)}
+                  onCancel={(e) => e.stopPropagation()}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <DeleteOutlined key="delete" onClick={(e) => e.stopPropagation()} />
+                </Popconfirm>
+              ]}
             >
-              {item.description}
+              <Card.Meta title={item.name} description={item.description} />
             </Card>
           </Col>
         ))}

@@ -1,4 +1,8 @@
-campaign_monitor_worker:
-  every: ['20s', first_in: '0s']
-  class: CampaignMonitorWorker
-  queue: default
+:scheduler:
+  :dynamic: true
+  :enabled: true
+  :schedule:
+    campaign_monitor_worker:
+      every: '2s'
+      class: CampaignMonitorWorker
+      queue: default

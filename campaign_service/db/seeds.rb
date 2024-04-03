@@ -1,19 +1,11 @@
-# Crear una campaña
-campaign = Campaign.create(name: "My Campaign", description: "Campaign Description", customer_group_id: 1)
+# Limpiar todos los usuarios y actividades
+UserCampaignProgress.destroy_all
+UserActivity.destroy_all
+User.destroy_all
 
-# Crear acciones
-action_email1 = ActionEmail.create(subject: "Email 1 Subject", body: "Email 1 Body")
-action_email2 = ActionEmail.create(subject: "Email 2 Subject", body: "Email 2 Body")
-action_wait = ActionWait.create(duration: 5)
+# Crear usuarios
+user1 = User.create(name: 'Usuario Uno', email: 'jlburgos@uc.cl')
+user2 = User.create(name: 'Usuario Dos', email: 'burgosfernandezjoaquin@gmail.com')
 
-# Crear nodos asociados a la campaña y acciones
-node1 = Node.create(action: action_email1, campaign: campaign)
-node2 = Node.create(action: action_email2, campaign: campaign, next_node: node2)
-node3 = Node.create(action: action_wait, campaign: campaign, next_node: nil)
-
-# Asegurarse de que el primer nodo de la campaña se establezca correctamente
-campaign.update(first_node_id: node1.id)
-
-# Establecer `next_node_id` para crear una secuencia de nodos
-node1.update(next_node: node2)
-node2.update(next_node: node3)
+# Imprimir en la consola que las seeds han sido creadas
+puts 'Se han creado las seeds de usuarios id: ' + user1.id.to_s + ' y ' + user2.id.to_s + '.'

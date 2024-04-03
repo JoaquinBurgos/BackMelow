@@ -60,14 +60,11 @@ class NodesController < ApplicationController
 
 		def update
 			ActiveRecord::Base.transaction do
-				# Crea una nueva acción utilizando el método create_action ya existente.
 				new_action = create_action(params[:node][:action_type], node_params[:action])
 				
 				if new_action.persisted?
-					# Elimina la acción antigua si es necesario. Asegúrate de manejar cualquier posible dependencia o referencia a esta acción.
 					@node.action.destroy if @node.action
 		
-					# Actualiza el nodo para referenciar la nueva acción creada.
 					if @node.update(action: new_action)
 						render json: @node, status: :ok
 					else

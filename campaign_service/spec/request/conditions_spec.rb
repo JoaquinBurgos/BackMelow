@@ -14,7 +14,7 @@ RSpec.describe "Conditions", type: :request do
         }.to change(Condition, :count).by(1)
 
         expect(response).to have_http_status(:created)
-        campaign.reload  # Asegurarse de recargar la campaña para obtener los cambios más recientes
+        campaign.reload  
         expect(campaign.conditions.exists?(event_type: 'EventType', criteria_key: 'Key1', criteria_value: 'Value1')).to be true
       end
     end
@@ -43,7 +43,7 @@ RSpec.describe "Conditions", type: :request do
       }.to change(Condition, :count).by(-1)
 
       expect(response).to have_http_status(:no_content)
-      campaign.reload  # Asegurarse de recargar la campaña para ver los cambios
+      campaign.reload  
       expect(campaign.conditions).not_to include(condition)
     end
   end

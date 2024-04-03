@@ -1,4 +1,3 @@
-// src/components/AddCampaignModal.js
 import React from 'react';
 import { Modal, Form, Input, Button } from 'antd';
 

@@ -18,21 +18,19 @@ export const transformCampaignToFlowElements = (campaign) => {
     let nodes = [];
     let edges = [];
     let last_node_id = null;
-    // Define colores para cada tipo de acción
     const actionTypeColors = {
         'ActionEmail': 'lightblue',
         'ActionWait': 'lightgreen',
-        // Añade colores para los nodos especiales
         'Trigger': '#EEADD1',
         'AddNode': '#CB803D',
     };
 
-    // Nodo inicial para editar la condición de trigger
     nodes.push({
         id: 'trigger',
-        type: 'default', // Este tipo puede ser personalizado para diferenciar los nodos especiales
+        label: 'Condition Manager',
+        type: 'default', 
         data: { label: 'Campaign Rules' },
-        position: { x: 250, y: 0 }, // Este nodo siempre estará al principio
+        position: { x: 250, y: 0 }, 
         style: {
             background: actionTypeColors['Trigger'],
             borderColor: '#333',
@@ -42,14 +40,25 @@ export const transformCampaignToFlowElements = (campaign) => {
         },
     });
 
-    let yOffset = 100; // Comienza a posicionar los siguientes nodos más abajo
+    let yOffset = 100; 
 
     orderedNodes.forEach((node, index) => {
-        // Transforma el nodo de campaña en un nodo de React Flow
         nodes.push({
             id: node.id.toString(),
             type: 'default',
-            data: { label: `${node.action_type === 'ActionEmail' ? 'Send Email: ' + node.action.subject : 'Wait: ' + node.action.duration + 'm'}` },
+            action: node.action,
+            data:{
+                label: (
+                  <div style={{
+                    overflow: 'hidden', 
+                    textOverflow: 'ellipsis', 
+                  }}>
+                    {node.action_type === 'ActionEmail'
+                      ? 'Send Email: ' + node.action.subject
+                      : 'Wait: ' + node.action.duration + 'm'}
+                  </div>
+                )
+              },
             position: { x: 250, y: yOffset + index * 100 },
             style: {
                 background: actionTypeColors[node.action_type],
@@ -72,31 +81,29 @@ export const transformCampaignToFlowElements = (campaign) => {
     });
 
     if (orderedNodes.length > 0) {
-        // Conecta el trigger con el primer nodo
         edges.push({
             id: 'eTrigger-firstNode',
             source: 'trigger',
             target: orderedNodes[0].id.toString(),
             animated: true,
-            style: { stroke: '#ff0066' }, // Color de ejemplo para este edge especial
+            style: { stroke: '#ff0066' }, 
         });
 
-        // Conecta el último nodo con el nodo de añadir
         const lastNodeId = orderedNodes[orderedNodes.length - 1].id.toString();
         edges.push({
             id: `e${lastNodeId}-addNode`,
             source: lastNodeId,
             target: 'addNode',
             animated: true,
-            style: { stroke: '#ffcc00' }, // Color de ejemplo para este edge especial
+            style: { stroke: '#ffcc00' }, 
         });
     }
 
-    // Añade el nodo final para añadir nuevos nodos
     const lastNodePosition = orderedNodes.length > 0 ? yOffset + orderedNodes.length * 100 : 100;
     nodes.push({
         id: 'addNode',
         type: 'default',
+        label: 'Node Creator',
         data: { label: 'Add Node' },
         position: { x: 250, y: lastNodePosition },
         style: {

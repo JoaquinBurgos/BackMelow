@@ -4,8 +4,8 @@ import { Form, Input } from 'antd';
 const LastLoginFields = () => (
   <Form.Item
     name="value"
-    label="Días desde el último login"
-    rules={[{ required: true, message: 'Por favor ingrese la cantidad de días!' }]}
+    label="Days since last login"
+    rules={[{ required: true, message: 'Please select an amount of days' }]}
   >
     <Input type="number" />
   </Form.Item>

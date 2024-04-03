@@ -18,7 +18,9 @@ const NodeDetail = ({ node, onResourceCreated, last_node_id, setSelectedNode,con
     if (!node) {
         return <p>Selecciona un nodo para ver los detalles.</p>;
     }
-    
+    const onCancel = () => {
+        setShowForm(false);
+    };
     const handleSubmit = (values) => {
         const parent_node_id = node.id === 'addNode' ? last_node_id : node.id;
 
@@ -35,7 +37,7 @@ const NodeDetail = ({ node, onResourceCreated, last_node_id, setSelectedNode,con
             .then(res => {
                 console.log('Node created:', res.data);
                 onResourceCreated();
-                setShowForm(false); // Oculta el formulario después de crear el nodo
+                setShowForm(false); 
             })
             .catch(err => console.error(err));
     };
@@ -44,8 +46,8 @@ const NodeDetail = ({ node, onResourceCreated, last_node_id, setSelectedNode,con
         API.delete(`/campaigns/${campaignId}/nodes/${node.id}`)
             .then(() => {
                 console.log('Nodo eliminado correctamente');
-                onResourceCreated(); // Actualiza la UI para reflejar la eliminación del nodo
-                setSelectedNode(null); // Deselecciona el nodo eliminado
+                onResourceCreated(); 
+                setSelectedNode(null); 
             })
             .catch(err => {
                 console.error(err);
@@ -54,17 +56,18 @@ const NodeDetail = ({ node, onResourceCreated, last_node_id, setSelectedNode,con
     };
     return (
         <Card className={styles.nodeDetail}>
-            <p className={styles.title}><strong>Tipo:</strong> {node.data.label}</p>
+            <p className={styles.title}><strong>Type:</strong> {node.action ? (node.action?.subject? 'Mailer' : 'Wait'): node.label}</p>
+            {node.action ? (node.action?.subject? <p className={styles.subject}><strong>Subject:</strong> {node.action?.subject}</p> :<p><strong>Waiting time: </strong>{node.action?.duration} minutes</p>) : null}
+            {node.action?.body? <p className={styles.body}><strong>Body:</strong> {node.action?.body}</p>: null}
             {node.id === 'trigger' && <CampaignConditions conditions={conditions} onResourceCreated={onResourceCreated}/>}
             {node.id === 'addNode' || showForm ? (
-                <AddNodeForm onSubmit={handleSubmit} />
+                <AddNodeForm onSubmit={handleSubmit} onCancel={onCancel} />
             ) : (
                 <>
-                    {/* Añade más detalles del nodo aquí */}
-                    <Button type="primary" style={{ marginRight: '10px'}} onClick={() => setShowForm(true)}>Insertar siguiente nodo</Button>
+                    <Button type="primary" style={{ marginRight: '10px'}} onClick={() => setShowForm(true)}>Insert Next Node</Button>
                     {isNodeIdNumeric && (
                         <Button danger onClick={handleDeleteNode}>
-                            Eliminar Nodo
+                            Delete Node
                         </Button>
                     )}
                 </>

@@ -1,6 +1,6 @@
 class CampaignsController < ApplicationController
   
-  before_action :set_campaign, only: [:show, :update]
+  before_action :set_campaign, only: [:show, :update, :destroy]
 
   def index
     @campaigns = Campaign.all
@@ -29,11 +29,27 @@ class CampaignsController < ApplicationController
     end
   end
 
+  def destroy
+    ActiveRecord::Base.transaction do
+      @campaign.nodes.each do |node|
+        Node.where(next_node_id: node.id).update_all(next_node_id: nil)
+      end
+  
+      if @campaign.destroy
+        head :no_content
+      else
+        render json: @campaign.errors, status: :unprocessable_entity
+      end
+    end
+  rescue ActiveRecord::RecordNotDestroyed
+    render json: { errors: 'Error al eliminar la campaña y sus nodos asociados.' }, status: :unprocessable_entity
+  end
+
   private
 
   def set_campaign
     if action_name == 'show'
-      @campaign = Campaign.includes(nodes: :action, conditions: {}).find(params[:id])
+      @campaign = Campaign.includes(nodes: :action, conditions: {}, user_campaign_progress: {}).find(params[:id])
     else
       @campaign = Campaign.find(params[:id])
     end

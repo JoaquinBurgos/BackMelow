@@ -38,7 +38,6 @@ class ConditionsController < ApplicationController
     end
   
     def condition_params
-      # Aquí asumimos que ya no necesitas pasar campaign_id en los parámetros
       params.require(:condition).permit(:event_type, :criteria_key, :criteria_value)
     end
   end
