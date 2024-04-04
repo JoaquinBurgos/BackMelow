@@ -24,6 +24,26 @@ CampaignFlow es ideal para empresas y equipos de marketing que buscan optimizar 
 4. **Evaluación Automatizada**: El worker ejecuta la lógica de procesamiento para mover a los usuarios a través del flujo basándose en sus actividades y condiciones cumplidas.
    
 ## Paso a Paso
+### 0. Instalacion y Configuracion
+
+Antes de comenzar con la creación y simulación de campañas, necesitas instalar y configurar el proyecto en tu entorno local. Aquí te explicamos cómo:
+
+### Requisitos Previos
+
+Asegúrate de tener instalado lo siguiente:
+
+- [Ruby](https://www.ruby-lang.org/es/documentation/installation/) (versión 3.0.0)
+- [Rails](http://railsapps.github.io/installing-rails.html) (versión 6.0.6.1 o superior)
+- [PostgreSQL](https://www.postgresql.org/download/) para la base de datos
+- [Node.js](https://nodejs.org/) y [npm](https://www.npmjs.com/) para el frontend
+- [Redis 6.2.6]
+
+### Instalación del Backend
+
+1. Clona el repositorio del proyecto a tu máquina local:
+```bash
+git clone https://github.com/tuUsuario/tuRepositorio.git
+cd tuRepositorio/backend
 
 ### 1. Crear una Campaña y Establecer Condiciones
 El primer y segundo paso se realizan a través de la interfaz gráfica de CampaignFlow, donde podrás:
