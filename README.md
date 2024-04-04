@@ -40,7 +40,6 @@ Asegúrate de tener instalado lo siguiente:
 
 ### Instalación del Backend
 
-1. Clona el repositorio del proyecto a tu máquina local:
 ```bash
 git clone https://github.com/JoaquinBurgos/CampaignService.git
 cd CampaignService/campaign_service
@@ -49,7 +48,7 @@ bundle install
 rails db:create db:migrate
 rails s -p 3001
 ```
-### Frontend
+### Instalación del Frontend
 ```bash
 cd CampaignService/my-campaign-app
 npm install
