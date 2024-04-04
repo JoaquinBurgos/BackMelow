@@ -83,7 +83,7 @@ Para simular las actividades de los usuarios, primero debes crear usuarios en la
 #### Generar Actividades Ficticias
 Con los usuarios ya creados, procederás a generar actividades que simulan la interacción con un e-commerce o negocio:
 
-- Realizar peticiones POST a la ruta `/user_activities` utilizando Postman o tu cliente HTTP favorito.
+- Realizar peticiones POST a la ruta `/user_activities` utilizando Postman, tu cliente HTTP favorito o directamente en consola.
 - Enviar datos estructurados como se muestra a continuación:
 
 ```bash
