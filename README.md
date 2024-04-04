@@ -37,13 +37,13 @@ docker-compose up
 ```
 Una vez que esten los containers arriba, ejecutar comandos para setup de la database del backend en otra terminal
 ```
-docker exec -it backmelow-backend-1 rails db:create
-docker exec -it backmelow-backend-1 rails db:migrate
+docker exec -it campaignservice-backend-1 rails db:create
+docker exec -it campaignservice-backend-1 rails db:migrate
 ```
 ### Tareas asincronicas de Sidekiq
 Para la realización de validación y avance de usuarios por los nodos de las campañas se utiliza Sidekiq, el cual realiza una acción cada cierto tiempo. Este intervalo se puede ajustar en el archivo config/sidekiq_scheduler.yml, modificando el atributo every, que por defecto está configurado para ejecutarse cada 5 segundos.
 ```bash
-docker exec -it backmelow-backend-1 bundle exec sidekiq -C config/sidekiq_scheduler.yml
+docker exec -it campaignservice-backend-1 bundle exec sidekiq -C config/sidekiq_scheduler.yml
 ## IMPORTANTE QUE EL SERVIDOR REDIS ESTE FUNCIONANDO
 ```
 Una vez ejecutado el worker de Sidekiq, este funciona en tiempo real percibe los cambios realizados a la base de datos.
@@ -60,7 +60,7 @@ El primer y segundo paso se realizan a través de la interfaz gráfica de Campai
 Para simular las actividades de los usuarios, primero debes crear usuarios en la base de datos:
 
 - Editar el archivo `seeds.rb` en el backend con los correos electrónicos y nombres de los usuarios que desees simular.
-- Ejecutar el comando `docker exec -it backmelow-backend-1 rails db:seed` en la consola, en el directorio CampaignService/campaign_service.
+- Ejecutar el comando `docker exec -it campaignservice-backend-1 rails db:seed` en la consola, en el directorio CampaignService/campaign_service.
 - La consola arrojara los id de los usuarios creados, los cuales usaremos para crear actividades de usuarios.
 - La aplicacion cuenta con un servicio de mailer, por lo que es importante definir los emails bien para recibir estos.
 
