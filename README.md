@@ -35,7 +35,7 @@ git clone https://github.com/JoaquinBurgos/CampaignService.git
 docker-compose build
 docker-compose up
 ```
-Una vez que esten los containers arriba, ejecutar comandos para setup de la bd del backend
+Una vez que esten los containers arriba, ejecutar comandos para setup de la database del backend en otra terminal
 ```
 docker exec -it backmelow-backend-1 rails db:create
 docker exec -it backmelow-backend-1 rails db:migrate
