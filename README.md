@@ -86,8 +86,8 @@ Con los usuarios ya creados, procederás a generar actividades que simulan la in
 - Realizar peticiones POST a la ruta `/user_activities` utilizando Postman o tu cliente HTTP favorito.
 - Enviar datos estructurados como se muestra a continuación:
 
-```json
-// Para la ultima vez que se logeo
+```bash
+## Para la ultima vez que se logeo
 curl -X POST http://localhost:3001/user_activities \
      -H 'Content-Type: application/json' \
      -d '{
@@ -99,7 +99,7 @@ curl -X POST http://localhost:3001/user_activities \
              }
            }
          }'
-// Para el tiempo en el que se creo el user
+## Para el tiempo en el que se creo el user
   curl -X POST http://localhost:3001/user_activities \
      -H 'Content-Type: application/json' \
      -d '{
@@ -111,7 +111,7 @@ curl -X POST http://localhost:3001/user_activities \
              }
            }
          }'
-// Para las rutas visitadas
+## Para las rutas visitadas
   curl -X POST http://localhost:3001/user_activities \
      -H 'Content-Type: application/json' \
      -d '{
@@ -123,4 +123,4 @@ curl -X POST http://localhost:3001/user_activities \
              }
            }
          }'
-
+```
