@@ -42,9 +42,24 @@ Asegúrate de tener instalado lo siguiente:
 
 1. Clona el repositorio del proyecto a tu máquina local:
 ```bash
-git clone https://github.com/tuUsuario/tuRepositorio.git
-cd tuRepositorio/backend
-
+git clone https://github.com/JoaquinBurgos/CampaignService.git
+cd CampaignService/campaign_service
+bundle install
+rails db:create db:migrate
+rails s -p 3001
+```
+### Frontend
+```bash
+cd CampaignService/my-campaign-app
+npm install
+npm start
+```
+### Tareas asincronicas de Sidekiq
+Para la realización de validación y avance de usuarios por los nodos de las campañas se utiliza Sidekiq, el cual realiza una acción cada cierto tiempo. Este intervalo se puede ajustar en el archivo config/sidekiq_scheduler.yml, modificando el atributo every, que por defecto está configurado para ejecutarse cada 5 segundos.
+```bash
+cd CampaignService/campaign_service
+bundle exec sidekiq -C config/sidekiq_scheduler.yml
+```
 ### 1. Crear una Campaña y Establecer Condiciones
 El primer y segundo paso se realizan a través de la interfaz gráfica de CampaignFlow, donde podrás:
 
