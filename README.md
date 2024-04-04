@@ -77,7 +77,7 @@ El primer y segundo paso se realizan a través de la interfaz gráfica de Campai
 Para simular las actividades de los usuarios, primero debes crear usuarios en la base de datos:
 
 - Editar el archivo `seeds.rb` en el backend con los correos electrónicos y nombres de los usuarios que desees simular.
-- Ejecutar el comando `rails db:seed` en la consola.
+- Ejecutar el comando `rails db:seed` en la consola, en el directorio CampaignService/campaign_service.
 - La consola arrojara los id de los usuarios creados, los cuales usaremos para crear actividades de usuarios.
 
 #### Generar Actividades Ficticias
