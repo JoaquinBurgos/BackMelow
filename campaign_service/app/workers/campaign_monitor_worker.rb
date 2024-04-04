@@ -19,7 +19,7 @@ class CampaignMonitorWorker
 	  
 		if user_progress.nil?
 		  if all_conditions_met?(user, campaign)
-			puts "Creating progress for user #{user.id} and campaign #{campaign.id}."
+			Rails.logger.info "Creating progress for user #{user.id} and campaign #{campaign.id}."
 			user_progress = UserCampaignProgress.create(
 			  user: user, 
 			  campaign: campaign, 
@@ -33,7 +33,7 @@ class CampaignMonitorWorker
 	end
   
 	def all_conditions_met?(user, campaign)
-		puts "Checking conditions for user #{user.id} and campaign #{campaign.id}..."
+		Rails.logger.info "Checking conditions for user #{user.id} and campaign #{campaign.id}..."
 		campaign.conditions.all? do |condition|
 			if condition.event_type == 'last_login'
 				last_login_activity = user.user_activities.where(event_type: 'last_login').max_by do |activity|

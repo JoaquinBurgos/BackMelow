@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: myapp_development
+
+  redis:
+    image: redis:6.2.6
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./campaign_service
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
+    volumes:
+      - ./campaign_service:/myapp
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379/1
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: myapp_development
+
+  frontend:
+    build: ./my-campaign-app
+    volumes:
+      - ./my-campaign-app:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
