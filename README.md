@@ -88,29 +88,39 @@ Con los usuarios ya creados, procederás a generar actividades que simulan la in
 
 ```json
 // Para la ultima vez que se logeo
-{
-  "user_activity": {
-    "user_id": "ID_del_usuario_creado",
-    "event_type": "last_login",
-    "data": {
-      "logged_at": "Fecha en formato ISO8601 o YYYY-MM-DD"
-    }
-  },
+curl -X POST http://localhost:3001/user_activities \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "user_activity": {
+             "user_id": "ID_del_usuario_creado",
+             "event_type": "last_login",
+             "data": {
+               "logged_at": "Fecha en formato ISO8601 o YYYY-MM-DD"
+             }
+           }
+         }'
 // Para el tiempo en el que se creo el user
-  "user_activity": {
-    "user_id": "ID_del_usuario_creado",
-    "event_type": "account_creation",
-    "data": {
-      "created_at": "Fecha en formato ISO8601 o YYYY-MM-DD"
-    }
-  },
+  curl -X POST http://localhost:3001/user_activities \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "user_activity": {
+             "user_id": "ID_del_usuario_creado",
+             "event_type": "account_creation",
+             "data": {
+               "created_at": "Fecha en formato ISO8601 o YYYY-MM-DD"
+             }
+           }
+         }'
 // Para las rutas visitadas
-  "user_activity": {
-    "user_id": "ID_del_usuario_creado",
-    "event_type": "page_visit",
-    "data": {
-      "path": "/ruta_de_la_pagina"
-    }
-  }
-}
+  curl -X POST http://localhost:3001/user_activities \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "user_activity": {
+             "user_id": "ID_del_usuario_creado",
+             "event_type": "page_visit",
+             "data": {
+               "path": "/ruta_de_la_pagina"
+             }
+           }
+         }'
 
