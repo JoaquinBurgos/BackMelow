@@ -1,4 +1,3 @@
-# spec/requests/campaigns_spec.rb
 require 'rails_helper'
 
 RSpec.describe "Campaigns", type: :request do
@@ -13,7 +12,6 @@ RSpec.describe "Campaigns", type: :request do
       it 'creates a new campaign' do
         json_response = JSON.parse(response.body)
         expect(json_response['name']).to eq('New Campaign')
-        # Verifica otros atributos relevantes...
       end
     end
   
@@ -54,11 +52,9 @@ RSpec.describe "Campaigns", type: :request do
       expect(email_nodes.count).to eq(2)
       expect(wait_nodes.count).to eq(1)
 
-      # Verificar los subjects de los ActionEmails
       expect(email_nodes[0]['action']['subject']).to eq("First Email Subject")
       expect(email_nodes[1]['action']['subject']).to eq("Second Email Subject")
 
-      # Verificar la duración del ActionWait
       expect(wait_nodes[0]['action']['duration']).to eq(15)
       puts json_response
       expect(json_response['conditions'].length).to eq(2)

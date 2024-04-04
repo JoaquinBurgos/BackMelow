@@ -3,6 +3,6 @@
   :enabled: true
   :schedule:
     campaign_monitor_worker:
-      every: '2s'
+      every: '5s'
       class: CampaignMonitorWorker
       queue: default
