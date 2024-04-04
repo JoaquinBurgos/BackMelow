@@ -28,38 +28,22 @@ CampaignFlow es ideal para empresas y equipos de marketing que buscan optimizar 
 
 Antes de comenzar con la creación y simulación de campañas, necesitas instalar y configurar el proyecto en tu entorno local. Aquí te explicamos cómo:
 
-### Requisitos Previos
-
-Asegúrate de tener instalado lo siguiente:
-
-- [Ruby](https://www.ruby-lang.org/es/documentation/installation/) (versión 3.0.0)
-- [Rails](http://railsapps.github.io/installing-rails.html) (versión 6.0.6.1 o superior)
-- [PostgreSQL](https://www.postgresql.org/download/) para la base de datos
-- [Node.js](https://nodejs.org/) y [npm](https://www.npmjs.com/) para el frontend
-- [Redis 6.2.6](https://redis.io/)
-
-### Instalación del Backend
+El proyecto esta configurado para poder ejecutarse mediante docker, para esto hay que realizar los siguientes comandos en la terminal.
 
 ```bash
 git clone https://github.com/JoaquinBurgos/CampaignService.git
-cd CampaignService/campaign_service
-sudo service postgresql start
-bundle install
-rails db:create db:migrate
-rails s -p 3001
+docker-compose build
+docker-compose up
 ```
-### Instalación del Frontend
-```bash
-cd CampaignService/my-campaign-app
-npm install
-npm start
+Una vez que esten los containers arriba, ejecutar comandos para setup de la bd del backend
+```
+docker exec -it backmelow-backend-1 rails db:create
+docker exec -it backmelow-backend-1 rails db:migrate
 ```
 ### Tareas asincronicas de Sidekiq
 Para la realización de validación y avance de usuarios por los nodos de las campañas se utiliza Sidekiq, el cual realiza una acción cada cierto tiempo. Este intervalo se puede ajustar en el archivo config/sidekiq_scheduler.yml, modificando el atributo every, que por defecto está configurado para ejecutarse cada 5 segundos.
 ```bash
-cd CampaignService/campaign_service
-redis-server
-bundle exec sidekiq -C config/sidekiq_scheduler.yml
+docker exec -it backmelow-backend-1 bundle exec sidekiq -C config/sidekiq_scheduler.yml
 ## IMPORTANTE QUE EL SERVIDOR REDIS ESTE FUNCIONANDO
 ```
 Una vez ejecutado el worker de Sidekiq, este funciona en tiempo real percibe los cambios realizados a la base de datos.
