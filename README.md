@@ -36,7 +36,7 @@ Asegúrate de tener instalado lo siguiente:
 - [Rails](http://railsapps.github.io/installing-rails.html) (versión 6.0.6.1 o superior)
 - [PostgreSQL](https://www.postgresql.org/download/) para la base de datos
 - [Node.js](https://nodejs.org/) y [npm](https://www.npmjs.com/) para el frontend
-- [Redis 6.2.6]
+- [Redis 6.2.6](https://redis.io/)
 
 ### Instalación del Backend
 
@@ -44,6 +44,7 @@ Asegúrate de tener instalado lo siguiente:
 ```bash
 git clone https://github.com/JoaquinBurgos/CampaignService.git
 cd CampaignService/campaign_service
+sudo service postgresql start
 bundle install
 rails db:create db:migrate
 rails s -p 3001
@@ -58,8 +59,11 @@ npm start
 Para la realización de validación y avance de usuarios por los nodos de las campañas se utiliza Sidekiq, el cual realiza una acción cada cierto tiempo. Este intervalo se puede ajustar en el archivo config/sidekiq_scheduler.yml, modificando el atributo every, que por defecto está configurado para ejecutarse cada 5 segundos.
 ```bash
 cd CampaignService/campaign_service
+redis-server
 bundle exec sidekiq -C config/sidekiq_scheduler.yml
+## IMPORTANTE QUE EL SERVIDOR REDIS ESTE FUNCIONANDO
 ```
+Una vez ejecutado el worker de Sidekiq, este funciona en tiempo real percibe los cambios realizados a la base de datos.
 ### 1. Crear una Campaña y Establecer Condiciones
 El primer y segundo paso se realizan a través de la interfaz gráfica de CampaignFlow, donde podrás:
 
