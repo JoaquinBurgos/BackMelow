@@ -15,7 +15,9 @@ services:
       - "6379:6379"
 
   backend:
-    build: ./campaign_service
+    build: 
+      context: ./campaign_service
+      dockerfile: Dockerfile
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
     volumes:
       - ./campaign_service:/myapp
@@ -31,9 +33,12 @@ services:
       POSTGRES_DB: myapp_development
 
   frontend:
-    build: ./my-campaign-app
+    build: 
+      context: ./my-campaign-app
+      dockerfile: Dockerfile
     volumes:
       - ./my-campaign-app:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
     depends_on:
